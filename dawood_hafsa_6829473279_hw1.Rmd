@@ -1,0 +1,419 @@
+---
+title: "DSO 530 - Applied Modern Statistical Learning Methods"
+subtitle: "Homework 01"
+author: "Hafsa Dawood, USC ID: 6829-4732-79"
+date: "February 4, 2018"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+
+---
+
+(1) Describe the null hypotheses to which the p-values given in Table 3.4 correspond. Explain what conclusions you can draw based on these p-values. Your explanation should be phrased in terms of sales, TV, radio, and newspaper, rather than in terms of the coefficients of the linear model.
+
+Table 3.4:
+
+
+**Variable**  | **Coefficient**|**Std. error**|**t-stat**|**p-value**
+--------------|----------------|--------------|----------|---------------
+**Intercept** | 2.939          |0.3119        |9.42      |< 0.0001
+**TV**        | 0.046          |0.0014        |32.81     |< 0.0001
+**radio**     | 0.189          |0.0086        |21.89     |< 0.0001
+**newspaper** | -0.01          |0.0059        |-0.18     |0.8599
+
+The null hypotheses associated with Table 3.4 are that advertising budgets of "TV", "radio" or "newspaper" do not have an effect on sales correspondingly shown as:
+${H_0}^{(1)} : {\beta}_1 = 0$; ${H_0}^{(2)} : {\beta}_2 = 0$; ${H_0}^{(3)} : {\beta}_3 = 0$. The corresponding p-values are highly significant for "TV" and "radio" and not significant for "newspaper". Hence we reject ${H_0}^{(1)}$ and ${H_0}^{(2)}$ and we do not reject ${H_0}^{(3)}$. So we can conclude that newspaper advertising budget do not affect sales.
+
+
+(3) Suppose we have a data set with five predictors, $X_1 =GPA$, $X_2 = IQ$, $X_3 = Gender$ (1 for Female and 0 for Male), $X_4 = Interaction\quad between\quad GPA\quad and\quad IQ$, and $X_5 = Interaction\quad between\quad GPA\quad and\quad   Gender$. The response is starting salary after graduation (in thousands of dollars). Suppose we use least squares to fit the model, and get $\hat{\beta_0} = 50$, $\hat{\beta_1} = 20$, $\hat{\beta_2} = 0.07$, $\hat{\beta_3} = 35$, $\hat{\beta_4} = 0.01$, $\hat{\beta_5} = -10$.
+      
+      a. Which answer is correct, and why?
+           i. For a fixed value of IQ and GPA, males earn more on average than females.
+           ii. For a fixed value of IQ and GPA, females earn more on average than males.
+           iii. For a fixed value of IQ and GPA, males earn more on average than females provided that the GPA is high enough.
+           iv. For a fixed value of IQ and GPA, females earn more on average than males provided that the GPA is high enough.
+    
+           Solution:
+           
+           Salary is given by 
+           $$ \hat{y} = 50 + 20 (GPA) + 0.07 (IQ) + 35 (Gender) + 0.01 (GPA\, X\, IQ) - 10 (GPA\, X\, Gender)$$
+           
+           For Males, $Gender = 0$ and for females, $Gender = 1$
+           
+           Salary for Males 
+           $$ \hat{y} = 50 + 20 (GPA) + 0.07 (IQ) + 0.01 (GPA\, X\, IQ) - 10 (GPA\, X\, Gender)$$
+           
+           Salary for Females
+           $$ \hat{y} = 85 + 20 (GPA) + 0.07 (IQ) + 0.01 (GPA\, X\, IQ) - 10 (GPA\, X\, Gender)$$
+           
+           So the starting salary for males is higher than for females. Hence  (iii) is the right answer.
+           
+      b. Predict the salary of a female with IQ of 110 and a GPA of 4.0.
+          Solution:
+          $$ \hat{y} = 85 + 20 (4.0) + 0.07 (110) + 0.01 (4\, X\, 110) - 10 (4\, X\, 1)$$
+          $$ \hat{y} = 85 + 20 (4.0) + 0.07 (110) + 0.01 (440) - 10 (4)$$
+          
+        ```{r}
+              y=85 + 20*4.0 + 0.07*110 + 0.01*440 - 10*4
+              y
+              
+        ```
+      
+      c. True or false: Since the coefficient for the GPA/IQ interaction term is very small, there is very little evidence of an interaction effect. Justify your answer.
+      
+          False. To verify if the GPA/IQ has an impact on the quality of the model we need to test the hypothesis $H_0:\hat{\beta_4}=0$ and look at the p-value associated with the t or the F statistic to draw a conclusion.
+          
+          
+(4) I collect a set of data (n = 100 observations) containing a single predictor and a quantitative response. I then fit a linear regression model to the data, as well as a separate cubic regression, i.e. $Y = {\beta_0} + {\beta_1}X + {\beta_2}X_2 + {\beta_3}X_3 +\epsilon$.
+
+      a. Suppose that the true relationship between X and Y is linear, i.e. $Y = {\beta_0} + {\beta_1}X + \epsilon$. Consider the training residual sum of squares (RSS) for the linear regression, and also the training RSS for the cubic regression. Would we expect one to be lower than the other, would we expect them to be the same, or is there not enough information to tell? Justify your answer
+      
+      Without having more details about the  data, it is difficult to know if the RSS for linear regression is lower or the RSS for cubic regression. But it is assumed that the true relationship between X and Y is linear, we may expect the least squares line to be close to the true regression line, and hence the RSS for the linear regression may be lower than for the cubic regression.
+      
+      b. Answer (a) using test rather than training RSS.
+      
+      The test RSS depends upon the test data, so we have not enough information to conclude. However, we may assume that the cubic regression will have a higher test RSS as the overfit from training would have more error than the linear regression.
+      
+      c. Suppose that the true relationship between X and Y is not linear, but we don't know how far it is from linear. Consider the training RSS for the linear regression, and also the training RSS for the cubic regression. Would we expect one to be lower than the other, would we expect them to be the same, or is there not enough information to tell? Justify your answer.
+      
+      If we assume that the true relationship between X and Y is not linear, then the cubic regression will have lower training RSS than the linear fit because of higher degree of flexibility which will reduce the training RSS.
+      
+      d. Answer (c) using test rather than training RSS.
+      
+      It is mentioned that it is not known how far from linear the relationship between X and Y is.
+      If it is closer to linear than cubic, then linear regression test RSS could be lower.
+      But if it is closer to cubic than linear, the cubic regression test RSS could be lower.
+      This is due to bias and variance tradeoff: it is not clear what level of flexibility will fit the test data better, linear or cubic.
+      
+(5) Consider the fitted values that result from performing linear regression without an intercept. In this setting, the ith fitted value takes the form $$\hat{y_i} = x_i \hat{\beta} $$ where $$\hat{\beta} = (\sum\limits_{i=1}^{n} {x_i}{y_i}) / (\sum\limits_{i'=1}^{n} {x_{i'}^{2}}). $$ Show that we can write $$ \hat{y_i} = (\sum\limits_{i'=1}^{n} {a_i'}{y_i}). $$ 
+What is ${a_i'}$ ? 
+
+*Note: We interpret this result by saying that the fitted values from linear regression are linear combinations of the response values.*
+
+It is given that: $$\hat{y_i} = x_i \hat{\beta} $$
+where:  $$\hat{\beta} = (\sum\limits_{j=1}^{n} {x_j}{y_j}) / (\sum\limits_{k=1}^{n} {x_k}^{2}) $$
+By replacing the value of $\hat{\beta}$ in the first equation we get: 
+$$\hat{y_i} = x_i \left(\frac{\sum\limits_{j=1}^{n} {x_j}{y_j}}{\sum\limits_{k=1}^{n} {x_k}^{2}}\right) $$ 
+$$\hat{y_i} = \sum\limits_{j=1}^{n}  {y_j} \left(\frac{ x_i {x_j}}{\sum\limits_{k=1}^{n} {x_k}^{2}}\right ) $$
+Hence $$\hat{y_i} = \sum\limits_{j=1}^{n} {a_j} {y_j} $$ 
+where $$ {a_j} = \left(\frac{ x_i {x_j}}{\sum\limits_{k=1}^{n} {x_k}^{2}}\right) $$
+
+(6) Using (3.4), argue that in the case of simple linear regression, the least squares line always passes through the point $(\bar{x},\bar{y})$.
+
+
+The least square line equation is: 
+$$y=\hat{\beta_0}+\hat{\beta_1}x $$ 
+Substituting $x$ for $\bar{x}$
+$$ y=\hat{\beta_0}+\hat{\beta_1} \bar{x} $$ 
+
+$$ y=\bar{y} - \hat{\beta_1} \bar{x} +\hat{\beta_1} \bar{x} $$
+$$ y=\bar{y}$$
+
+Hence the least square line passes through the point $(\bar{x},\bar{y})$.
+
+(7) It is claimed in the text that in the case of simple linear regression of $Y$ onto $X$, the $R^2$ statistic (3.17) is equal to the square of the correlation between $X$ and $Y$ (3.18). Prove that this is the case. For simplicity, you may assume that $\bar{x}=$ $\bar{y}=0$.
+
+We know that:
+$${R^2} = 1 -  \left(\frac{RSS}{TSS}\right) $$
+$${R^2} = 1 -  \left(\frac{\sum\limits_{i} (y_i - \hat{y_i})^2}{\sum\limits_j {y_j}^2}\right) $$
+Also we know: $$\hat{y_i} = x_i \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x^2}_{j}}\right) $$ 
+Replacing the value of $\hat{y_i}$ in the value of ${R^2}$
+
+$${R^2} = 1 -  \left(\frac{\sum\limits_{i} \Bigg(y_i -  x_i \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x_j}^{2}}\right)\Bigg)^2}{\sum\limits_j {y_j}^2}\right) $$
+
+$${R^2} = \left(\frac{{\sum\limits_j {y_j}^2} -  {\sum\limits_{i=1} \Bigg(y_i -  x_i \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x_j}^{2}}\right)\Bigg)^2}}{\sum\limits_j {y_j}^2}\right) $$
+
+$${R^2} = \left(\frac{{\sum\limits_j {y_j}^2} -  {\sum\limits_{i} \Bigg({y_i}^2 - 2 y_i x_i \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x_j}^{2}} \right) + {x_i}^2 \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x_j}^{2}} \right) \Bigg)}}{\sum\limits_j {y_j}^2}\right) $$
+$${R^2} = \left(\frac{{\sum\limits_j {y_j}^2} -  { {\sum\limits_i {y_i}^2} + { \sum\limits_i2 y_i x_i \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x_j}^{2}} \right)} - \sum\limits_i {x_i}^2 \left(\frac{\sum\limits_{j} {x_j}{y_j}}{\sum\limits_{j} {x_j}^{2}} \right) }}{\sum\limits_j {y_j}^2}\right) $$
+
+
+$${R^2} = \left(\frac{{ 2{ \left(\frac{(\sum\limits_{i} {x_i}{y_i})^2}{\sum\limits_{j} {x^2}_{j}} \right)} -\left(\frac{(\sum\limits_{i} {x_i}{y_i})^2}{\sum\limits_{j} {x_j}^{2}} \right) }}{\sum\limits_j {y_j}^2}\right) $$
+
+
+$${R^2} = \frac{{ { \left(\frac{(\sum\limits_{i} {x_i}{y_i})^2}{\sum\limits_{j} {x_j}^{2}} \right)} }}{\sum\limits_j {y_j}^2} $$
+$${R^2} = \frac{(\sum\limits_{i} {x_i}{y_i})^2}{\sum\limits_j {x_j}^2 {y_j}^2} $$
+$${R^2} = Cor(X,Y)^2$$
+
+Hence proved.
+
+(8) This question involves the use of simple linear regression on the "Auto" data set.
+
+    a. Use the lm() function to perform a simple linear regression with "mpg" as the response and "horsepower" as the predictor. Use the summary() function to print the results. Comment on the output. For example :
+          i. Is there a relationship between the predictor and the response ?
+          
+          The p-value corresponding to the F-statistic is very low < 0.05 indicating a relationship between "mpg" and "horsepower".
+          $~$ $~$
+        ```{r}
+              
+              library(ISLR)
+              data = Auto
+              linear_reg1 <- lm(mpg ~ horsepower, data = data)
+              summary(linear_reg1)
+              
+      
+        ```
+          $~$    
+          ii. How strong is the relationship between the predictor and the response?
+          
+        ```{r}
+            
+            sigma(linear_reg1)/mean(data$mpg)
+       
+        ```
+          
+          To calculate the residual error relative to the response we use the mean of the response and the RSE. The mean
+          of mpg is 23.44592. The RSE of the lm.linear_reg1 was 4.906 which indicates a percentage error of 20.92%. The ${R^2}$ is equal to 0.6059, almost 60.59% of the variability in "mpg" can be explained using "horsepower".
+          
+          iii. Is the relationship between the predictor and the response positive or negative?
+          
+          The coefficient of horsepower is -0.157, which is negative. So the relationship is also negative.
+          
+          iv. What is the predicted $mpg$ associated with a $horsepower$ of 98 ? What are the associated 95% confidence
+          and prediction intervals ?
+          $~$
+          
+          Predicted mpg for horsepower =98 and associated 95% confidence interval:
+          
+        ```{r}
+          predict(linear_reg1, data.frame(horsepower = 98), interval = "confidence")
+          
+        ```
+        
+        Predicted mpg for horsepower =98 and associated 95% prediction interval:
+          
+        ```{r}
+          predict(linear_reg1, data.frame(horsepower = 98), interval = "prediction")
+          
+        ```
+    b. Plot the response and the predictor. Use the abline() function to display the least squares regression line.
+   
+        ```{r}
+        plot(data$horsepower, data$mpg, main = "Scatterplot of mpg vs. Horsepower", 
+                xlab = "horsepower", ylab = "mpg", col ="blue")
+        abline(linear_reg1, col = "red")
+        
+        
+        ```
+      
+    c. Use the plot() function to produce diagnostic plots of the least squares regression fit. Comment on any problems you see with the fit.
+    
+        ```{r}
+       
+        
+          plot(linear_reg1)
+    
+    
+        ```
+        
+        The plot of residuals versus fitted values indicates the presence of non linearity in the data. 
+        The plot of standardized residuals versus leverage indicates the presence of a few outliers (greater than 2 or
+        lower than -2) and a few high leverage points.
+        
+        
+
+(9) This question involves the use of multiple linear regression on the "Auto" data set.
+
+    a. Produce a scatterplot matrix which include all the variables in the data set.
+    
+        ```{r}
+        library(ISLR)
+        data = Auto
+        pairs(data)
+        
+        ```
+        
+    b. Compute the matrix of correlations between the variables using the function cor(). You will need to exclude the          "name" variable, which is qualitative.
+    
+    
+        ```{r}
+        str(data)
+        cor(data[1:8])
+        
+        ```
+        
+        
+    c. Use the lm() function to perform a multiple linear regression with "mpg" as the response and all other variables          except "name" as the predictors. Use the summary() function to print the results. Comment on the output. For             instance :
+        
+        i. Is there a relationship between the predictors and the response?
+        
+            To evaluathis we perform linear regression
+            
+            ```{r}
+            linear_reg2 = lm(mpg ~ . - name, data = data)
+            summary(linear_reg2)
+            ```
+            
+            The p-value corresponding to the F-statistic is 2.037105910^{-139}, this indicates a clear evidence of a                 relationship between "mpg" and the other predictors.
+        
+        
+        ii. Which predictors appear to have a statistically significant relationship to the response?
+        
+            On checking the p-values, all predictors are statistically significant except "cylinders", "horsepower" and              "acceleration".
+            
+            
+        iii. What does the coefficient for the "year" variable suggest?
+        
+        
+              The coefficient ot the "year" variable suggests that the average effect of an increase of 1 year is an                   increase of 0.750773 in "mpg" (all other predictors remaining constant). In other words, cars become more                fuel efficient every year by almost 1 mpg / year.
+              
+              
+      d. Use the plot() function to produce diagnostic plots of the linear regression fit. Comment on any problems you            see with the fit. Do the residual plots suggest any unusually large outliers ? Does the leverage plots identify           any observations with unusually high leverages?
+      
+      
+      
+      
+        ```{r}
+      
+         
+          plot(linear_reg2)
+      
+      
+        ```
+       The plot of residuals vs fitted values indicates slight non-linearity in the data. The plot of standardized residuals versus leverage indicates the presence of a few outliers (greater than 2 or less than -2) and one high leverage point (point 14).
+      
+            
+            
+            
+          
+            
+        e. Use the * and : symbols to fit linear regression models with interaction effects. Do any interactions appear
+        to be statistically significant?
+        
+        When fitting with all predictors plus all possible interaction terms very few interactions appear statistically
+        significant
+        
+        
+        ```{r}
+          linear_reg3.1 <- lm(mpg~.*.-name*.+.-name,data=data)
+          summary(linear_reg3.1)
+        
+        ```
+        
+        From the correlation matrix, we obtained the two highest correlated pairs and used them in picking interaction
+        effects.
+        From the p-values, we can see that the interaction between displacement and weight is statistically signifcant,
+        while the interactiion between cylinders and displacement is not.
+        
+        
+        
+        ```{r}
+         linear_reg3.2 <- lm(mpg ~ cylinders * displacement+displacement * weight, data = data[, 1:8])
+          summary(linear_reg3.2)
+        
+        
+        ```
+        
+        f. Try a few different transformations of the variables, such as $log X$, $\sqrt{X}$, $X^2$. Comment on your
+        findings.
+        
+        The log transformation gives the most linear plot.
+        
+        ```{r}
+        par(mfrow = c(2, 2))
+        
+        plot(log(data$horsepower), data$mpg, 
+              main = "Plot of Log(Horsepower) vs. mpg", xlab = "Log(Horsepower)", ylab = "mpg")
+        abline(lm(mpg ~ log(horsepower), data = data), col = "red")
+        
+        plot(sqrt(data$horsepower), data$mpg,
+                main = "Plot of Sqrt(Horsepower) vs. mpg", xlab = "Sqrt(Horsepower)", ylab = "mpg")
+        abline(lm(mpg ~ sqrt(horsepower), data = data), col = "red")
+        
+        plot((data$horsepower)^2, data$mpg,
+              main = "Plot of Square(Horsepower) vs. mpg", xlab = "Square(Horsepower)", ylab = "mpg")
+        abline(lm(mpg ~ (horsepower)^2, data = data), col = "red")
+        
+        ```
+ 
+(10)  This question should be answered using the "Carseats" data set.
+
+
+    a. Fit a multiple regression model to predict "Sales" using "Price", "Urban" and "US".
+    
+        ```{r}
+        library(ISLR)
+        data2 = Carseats
+        linear_reg4 = lm(Sales ~ Price + Urban + US, data = data2)
+        summary(linear_reg4)
+        
+        ```
+        
+    b. Provide an interpretation of each coefficient in the model. Be careful - some of the variables in the model are
+    qualitative!
+    
+    
+        i. The coefficient of the "Price" variable may be interpreted by saying that the average effect of a price
+        increase of 1 dollar is a decrease of 54.4588492 units in sales all other predictors remaining fixed. 
+        ii. The coefficient of the "Urban" variable may be interpreted by saying that on average the unit sales in urban
+        location are 21.9161508 units less than in rural location all other predictors remaining fixed.
+        iii. The coefficient of the "US" variable may be interpreted by saying that on average the unit sales in a US
+        store are 1200.5726978 units more than in a non-US store all other predictors remaining fixed.
+        
+        
+    c. Write out the model in equation form, being careful to handle the qualitative variables properly.
+    
+     
+    $$Sales = 13.043469 - 0.054459 (Price) - 0.021916 (Urban) + 1.200573 (US) + \epsilon $$
+    
+    If the store is in an urban location then Urban = 1 and if the store is in a non-urban location then Urban = 0. If the store is in the US then US = 1 and if the store is not in the US then US = 0  
+       
+           
+    d. For which of the predictors can you reject the null hypothesis ${H_0}:{\beta_j}= 0$ ?
+    
+    We can reject the null hypothesis for the "Price" and "US" variables.
+    
+    
+    e. On the basis of your response to the previous question, fit a smaller model that only uses the predictors for
+    which there is evidence of association with the outcome.
+    
+    
+        ```{r}
+        
+        linear_reg5 = lm(Sales ~ Price + US, data = data2)
+        summary(linear_reg5)
+        
+        
+        ```
+        
+    f. How well do the models in (a) and (e) fit the data?
+    
+    
+    Model (a) has an $Adjusted {R^2} = 0.2335$  and $RSE = 2.472$. Model (e) has an $Adjusted {R^2} = 0.2354$ and $RSE = 2.469$. Both models fit the data well but the model (e) has slightly lower $RSE$ and better $Adjusted {R^2}$ than for the model (a). 
+    
+    
+    g. Using the model from (e), obtain 95% confidence intervals for the coefficient(s).
+    
+        ```{r}
+        
+        confint(linear_reg5)
+
+        
+        ```
+        
+    f. Is there evidence of outliers or high leverage observations in the model from (e)?
+    
+
+    
+        ```{r}
+        par(mfrow = c(2, 2))
+      
+        plot(linear_reg5)
+        
+        ```
+        
+        The plot of standardized residuals vs leverage indicates the presence of a few outliers (greater than 2 or lower
+        than -2) and some leverage points.
+        
+        
+        
+        
+        
+          
+          
+
+
+          
+      
+      
+
+
